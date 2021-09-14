@@ -26,7 +26,7 @@ jobs:
   # Install an Apple certificate required to build on a macOS agent machine
   - task: InstallAppleCertificate@2
     inputs:
-      certSecureFile: TestCertificate.p12
+      certSecureFile: 'TestCertificate.p12'
       certPwd: $(TestCert.Password)
       keychain: 'temp' # Options: default, temp, custom
       #keychainPassword: # Required when keychain == Custom || Keychain == Default
@@ -40,7 +40,7 @@ jobs:
   - task: InstallAppleProvisioningProfile@1
     inputs:
       provisioningProfileLocation: 'secureFiles' # Options: secureFiles, sourceRepository
-      provProfileSecureFile: TestingPurposes.mobileprovision
+      provProfileSecureFile: 'TestingPurposes.mobileprovision'
       #provProfileSourceRepository: # Required when provisioningProfileLocation == SourceRepository
       removeProfile: true # Optional
 
