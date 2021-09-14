@@ -9,6 +9,9 @@ jobs:
   pool:
     vmImage: 'macOS-10.15'
 
+  variables:
+  - group: 'TenzrCertificateVariables'
+
   steps:
   # To manually select a Xamarin SDK version on the Hosted macOS agent, enable this script with the SDK version you want to target
   # https://go.microsoft.com/fwlink/?linkid=871629
@@ -27,7 +30,7 @@ jobs:
   - task: InstallAppleCertificate@2
     inputs:
       certSecureFile: TestCertificate.p12
-      #certPwd: # Optional
+      certPwd: $(TestCert.Password)
       keychain: 'temp' # Options: default, temp, custom
       #keychainPassword: # Required when keychain == Custom || Keychain == Default
       #customKeychainPath: # Required when keychain == Custom
