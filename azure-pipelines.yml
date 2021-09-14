@@ -42,12 +42,12 @@ jobs:
       provisioningProfileLocation: 'secureFiles' # Options: secureFiles, sourceRepository
       provProfileSecureFile: TestingPurposes.mobileprovision
       #provProfileSourceRepository: # Required when provisioningProfileLocation == SourceRepository
-      #removeProfile: true # Optional
+      removeProfile: true # Optional
 
   - task: XamariniOS@2
     inputs:
       solutionFile: '**/*.sln'
-      configuration: 'AppStore'
+      configuration: 'Release'
       packageApp: true
       args: /p:IpaPackageDir="/Users/vsts/agent/2.153.2/work/1/a"
 
