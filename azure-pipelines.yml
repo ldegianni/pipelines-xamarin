@@ -29,7 +29,7 @@ jobs:
   # Install an Apple certificate required to build on a macOS agent machine
   - task: InstallAppleCertificate@2
     inputs:
-      certSecureFile: '$(AwesomeApp.P12Certificate)'
+      certSecureFile: AwesomeApp.p12
       certPwd: '$(AwesomeApp.P12Password)'
       keychain: 'temp'
 
@@ -38,7 +38,7 @@ jobs:
   - task: InstallAppleProvisioningProfile@1
     inputs:
       provisioningProfileLocation: 'secureFiles'
-      provProfileSecureFile: '$(AwesomeApp.ProvisioningProfile)'
+      provProfileSecureFile: AwesomeApp.mobileprovision
       removeProfile: true
 
   - task: XamariniOS@2
