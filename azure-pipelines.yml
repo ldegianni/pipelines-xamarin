@@ -8,6 +8,9 @@ jobs:
 - job: iOS
   pool:
     vmImage: 'macOS-10.15'
+    
+  variables:
+  - group: 'iOS Signing And Provisioning'
 
   steps:
   # To manually select a Xamarin SDK version on the Hosted macOS agent, enable this script with the SDK version you want to target
@@ -26,23 +29,17 @@ jobs:
   # Install an Apple certificate required to build on a macOS agent machine
   - task: InstallAppleCertificate@2
     inputs:
-      certSecureFile: 'TestCertificate.p12'
-      certPwd: $(TestCert.Password)
-      keychain: 'temp' # Options: default, temp, custom
-      #keychainPassword: # Required when keychain == Custom || Keychain == Default
-      #customKeychainPath: # Required when keychain == Custom
-      #deleteCert: # Optional
-      #deleteCustomKeychain: # Optional
-      #signingIdentity: # Optional
+      certSecureFile: '$(AwesomeApp.P12Certificate)'
+      certPwd: '$(AwesomeApp.P12Password)'
+      keychain: 'temp'
 
   # Install Apple provisioning profile
   # Install an Apple provisioning profile required to build on a macOS agent machine
   - task: InstallAppleProvisioningProfile@1
     inputs:
-      provisioningProfileLocation: 'secureFiles' # Options: secureFiles, sourceRepository
-      provProfileSecureFile: 'AwesomeApp.mobileprovision'
-      #provProfileSourceRepository: # Required when provisioningProfileLocation == SourceRepository
-      removeProfile: true # Optional
+      provisioningProfileLocation: 'secureFiles'
+      provProfileSecureFile: '$(AwesomeApp.ProvisioningProfile)'
+      removeProfile: true
 
   - task: XamariniOS@2
     inputs:
@@ -51,16 +48,13 @@ jobs:
       signingProvisioningProfileID: '$(APPLE_PROV_PROFILE_UUID)'
       configuration: 'Release'
       packageApp: true
-      args: /p:IpaPackageDir="/Users/vsts/agent/2.153.2/work/1/a"
+      args: /p:IpaPackageDir="$(Build.ArtifactStagingDirectory)"
 
   # Publish build artifacts
   # Publish build artifacts to Azure Pipelines or a Windows file share
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: '$(Build.ArtifactStagingDirectory)' 
-      artifactName: 'drop' 
-      publishLocation: 'Container' # Options: container, filePath
-      #targetPath: # Required when publishLocation == FilePath
-      parallel: true # Optional
-      #parallelCount: # Optional
-      #fileCopyOptions: #Optional
+      artifactName: 'IOS App' 
+      publishLocation: 'Container'
+      parallel: true
